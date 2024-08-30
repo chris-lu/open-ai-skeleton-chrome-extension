@@ -1,0 +1,35 @@
+{
+    "manifest_version": 3,
+    "name": "Skeleton for an easy OpenAI integration in Google Chrome extension",
+    "version": "0.0.1",
+    "description": "A base skeleton to request content analysis with Open AI",
+    "permissions": [
+        "activeTab",
+        "storage"
+    ],
+    "icons": {
+        "512": "images/icon512.png"
+    },
+    "host_permissions": ["https://*.openai.com/"],
+    "background": {
+        "service_worker": "background.js"
+    },    
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "512": "images/icon512.png"
+        }
+    },
+    "web_accessible_resources": [
+        {
+          "resources": [ "fonts/Roboto-Regular.woff", "fonts/FontAwesome-Webfont.woff", "config.json" ],
+          "matches": ["*://*/*"]
+        }
+    ],    
+    "content_scripts": [
+        {
+            "js": ["content.js"],
+            "matches": ["*://*/*"]
+        }
+    ]
+}

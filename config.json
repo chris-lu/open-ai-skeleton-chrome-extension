@@ -1,0 +1,20 @@
+{
+    "model": "gpt-4o-mini",
+    "selector": "#mainContent article article",
+    "context": [
+        "I'll send you the content of a web page, without HTML murkup.",
+        "In this page, you'll find all the following information:",
+        "- The price (Price)",
+        "- The size of the house (Size)",
+        "- The size of the land (Land in m²)",
+        "- If the house has dependencies (Dependencies)",
+        "- if the house has a pool (Pool)",
+        "You'll return the answer to these questions as following:",
+        "- You'll answer only with the necessay and minimal data. One line per each information. The answer should first include the part that was isned in parentesis, then a tabulation character, then the answer.",
+        "- When the question start with 'If', you'll answer with 'Yes' or 'No'",
+        "Here is an example of the answer with all the information you will find: ",
+        "Price:\t256000",
+        "Land in m²:\t150",
+        "Dependencies:\tYes"
+    ]
+}
