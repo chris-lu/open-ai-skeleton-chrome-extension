@@ -25,14 +25,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         else {
             const reason = answer?.error || 'unknown';
-            // Object are destructured. It's not an exception anymore. 
             messages.classList.remove('hidden');
             messages.innerHTML = 'Something went wrong (' + reason + '). Please try to reconnect to <a target="_blank" href="https://chat.openai.com/chat">chat.openai.com</a>.';
         }
     };
 
     async function getData(textContent) {
-        console.log('textContent', textContent);
         if (textContent?.length) {
             const port = chrome.runtime.connect();
             port.postMessage({ question: textContent });

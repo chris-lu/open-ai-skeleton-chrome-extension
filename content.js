@@ -18,7 +18,6 @@ async function getContent() {
 
 chrome.runtime.onMessage.addListener((request, sender, response) => {
     (async () => {
-        console.log("addListener");
         const { action } = request;
         if (action === "GetContent") {
             try {

@@ -4,7 +4,7 @@ async function getConfig() {
         .then(resp => resp.json());
 };
 
-const getToken = async () => {
+async function getToken() {
     return new Promise(async (resolve, reject) => {
         const resp = await fetch("https://chatgpt.com/api/auth/session");
         if (resp.status === 403) {
@@ -22,12 +22,13 @@ const getToken = async () => {
     });
 };
 
-const getResponse = async (question) => {
+async function getResponse(question) {
     const config = await getConfig();
+    console.log("Open AI request content:", question);
     return new Promise(async (resolve, reject) => {
         try {
             const accessToken = await getToken();
-            fetch("https://api.openai.com/v1/chat/completions", {
+            const resp = await fetch("https://api.openai.com/v1/chat/completions", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -40,16 +41,13 @@ const getResponse = async (question) => {
                             content: config.context.join("\n") + "\n\n" + question
                         }
                     ],
-                    model: config.model,
-                    temperature: 1
+                    model: config?.model || 'gpt-4o-mini',
+                    temperature: config?.temperature || 1
                 })
-            })
-                .then(response => response.json())
-                .then(result => {
-                    console.log(result);
-                    resolve(result?.choices[0]?.message.content);
-                });
-
+            });
+            const data = await resp.json();
+            console.log("Open AI answer:", data);
+            resolve(data?.choices[0]?.message.content);
         } catch (e) {
             reject(e);
         }
@@ -60,8 +58,10 @@ chrome.runtime.onConnect.addListener((port) => {
     port.onMessage.addListener((msg) => {
         const question = msg.question;
         getResponse(question).then(async answer => {
-            console.log(answer);
             port.postMessage(answer);
-        }).catch((e) => { port.postMessage({ error: e.toString() }); });
+        }).catch((e) => {
+            // Object will be destructured. It won't be an exception anymore.
+            port.postMessage({ error: e.toString() });
+        });
     });
 });
